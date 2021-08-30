@@ -1,0 +1,18 @@
+.smallProduct {
+  display: none;
+}
+.bigProduct {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .bigProduct {
+    display: none;
+  }
+  .smallProduct {
+    display: block;
+  }
+}
+
+@media (max-width: 425px) {
+}
