@@ -5,6 +5,8 @@ import NoMatch from "./Components/NoMatch/NoMatch";
 import Review from "./Components/Review/Review";
 import Manage from "./Components/Manage/Manage";
 import DetailsPage from "./Components/DetailsPage/DetailsPage";
+import Shipment from "./Components/Shipment/Shipment";
+import Login from "./Components/Login/Login";
 
 function App() {
   return (
@@ -22,6 +24,12 @@ function App() {
           </Route>
           <Route path="/manage">
             <Manage></Manage>
+          </Route>
+          <Route path="/shipment">
+            <Shipment></Shipment>
+          </Route>
+          <Route path="/login">
+            <Login></Login>
           </Route>
           <Route path="/ProductDetails/:key">
             <DetailsPage></DetailsPage>

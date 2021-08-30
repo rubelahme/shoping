@@ -5,16 +5,14 @@ import fakeData from "../../fakeData";
 import {
   getDatabaseCart,
   removeFromDatabaseCart,
-  processOrder,
 } from "../../utilities/databaseManager";
 import Cart from "../Home/Cart/Cart";
 import NavBar from "../Home/NavBar/NavBar";
 import ReviewItem from "./ReviewItem";
-import Imagone from "../../images/giphy.gif";
+import { useHistory } from "react-router-dom";
 
 const Review = () => {
   const [cart, setCart] = useState([]);
-  const [item, setItem] = useState(false);
 
   useEffect(() => {
     const setData = getDatabaseCart();
@@ -32,15 +30,10 @@ const Review = () => {
     setCart(newCart);
     removeFromDatabaseCart(key);
   };
-  const PlaceOrder = () => {
-    setCart([]);
-    processOrder();
-    setItem(true);
+  let history = useHistory();
+  const ProceedCheckout = () => {
+    history.push(`/shipment`);
   };
-  let thankYou;
-  if (item) {
-    thankYou = <img src={Imagone} alt="Imagone" />;
-  }
 
   return (
     <div>
@@ -55,15 +48,14 @@ const Review = () => {
                 removeHandel={removeHandel}
               ></ReviewItem>
             ))}
-            {item && thankYou}
           </div>
           <div className="col-md-3">
             <Cart cart={cart}>
               <button
-                onClick={PlaceOrder}
+                onClick={ProceedCheckout}
                 className="btn btn-warning text-white fw-bold form-control"
               >
-                Place Order
+                Proceed Checkout
               </button>
             </Cart>
           </div>
