@@ -7,10 +7,19 @@ import Manage from "./Components/Manage/Manage";
 import DetailsPage from "./Components/DetailsPage/DetailsPage";
 import Shipment from "./Components/Shipment/Shipment";
 import Login from "./Components/Login/Login";
+import { createContext } from "react";
+import { useState } from "react";
+import PrivateRoute from "./Components/Login/PrivateRoute";
+export const AllProvider = createContext();
 
 function App() {
+  const [loginItem, setLoginItem] = useState({
+    displayName: "",
+    email: "",
+    photoURL: "",
+  });
   return (
-    <div>
+    <AllProvider.Provider value={[loginItem, setLoginItem]}>
       <Router>
         <Switch>
           <Route exact path="/">
@@ -25,9 +34,9 @@ function App() {
           <Route path="/manage">
             <Manage></Manage>
           </Route>
-          <Route path="/shipment">
+          <PrivateRoute path="/shipment">
             <Shipment></Shipment>
-          </Route>
+          </PrivateRoute>
           <Route path="/login">
             <Login></Login>
           </Route>
@@ -39,7 +48,7 @@ function App() {
           </Route>
         </Switch>
       </Router>
-    </div>
+    </AllProvider.Provider>
   );
 }
 

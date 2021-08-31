@@ -30,6 +30,7 @@ const Review = () => {
     setCart(newCart);
     removeFromDatabaseCart(key);
   };
+
   let history = useHistory();
   const ProceedCheckout = () => {
     history.push(`/shipment`);

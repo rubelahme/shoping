@@ -7,17 +7,22 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   updateProfile,
-  signOut,
 } from "firebase/auth";
 import { firebaseConfig } from "./firebaseConfig";
 import { useForm } from "react-hook-form";
-import NavBar from "../Home/NavBar/NavBar";
 import "./Login.css";
+import { useHistory, useLocation } from "react-router-dom";
+import { useContext } from "react";
+import { AllProvider } from "../../App";
 const app = initializeApp(firebaseConfig);
 console.log(app);
 
 const Login = () => {
   document.title = "Login Page";
+  let history = useHistory();
+  let location = useLocation();
+  let { from } = location.state || { from: { pathname: "/" } };
+  const [setLoginItem] = useContext(AllProvider);
 
   // google Auth....
   const provider = new GoogleAuthProvider();
@@ -30,7 +35,8 @@ const Login = () => {
         localStorage.setItem("token", token);
         const user = result.user;
         UpdateProfiles(user.displayName, user.photoURL);
-        console.log(token, user);
+        setLoginItem(user);
+        history.replace(from);
       })
       .catch((error) => {
         const errorMessage = error.message;
@@ -56,7 +62,8 @@ const Login = () => {
         .then((userCredential) => {
           const user = userCredential.user;
           localStorage.setItem("token", user.accessToken);
-          console.log(user);
+          setLoginItem(user);
+          history.replace(from);
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -75,7 +82,8 @@ const Login = () => {
           const user = userCredential.user;
           localStorage.setItem("token", user.accessToken);
           UpdateProfiles(data.Surname, user.photoURL);
-          console.log(user);
+          setLoginItem(user);
+          history.replace(from);
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -84,6 +92,7 @@ const Login = () => {
         });
     }
   };
+
   // update Profile.....
   const UpdateProfiles = (name, photo) => {
     const auth = getAuth();
@@ -95,22 +104,8 @@ const Login = () => {
       .catch((error) => {});
   };
 
-  // handel Out
-  const handelSingOut = () => {
-    const auth = getAuth();
-    signOut(auth)
-      .then(() => {
-        localStorage.removeItem("token");
-        console.log("rubel");
-      })
-      .catch((error) => {
-        console.log("ahmed");
-      });
-  };
-
   return (
     <div>
-      <NavBar></NavBar>
       <div className="login">
         <div className="container">
           <div className="containers">
@@ -125,7 +120,7 @@ const Login = () => {
                             for="exampleFormControl"
                             className="form-label"
                           >
-                            <strong>Email :</strong>
+                            Email
                           </label>
                           <input
                             type="email"
@@ -145,7 +140,7 @@ const Login = () => {
                         </div>
                         <div class="mb-3">
                           <label for="example" className="form-label">
-                            <strong>Password :</strong>
+                            Password
                           </label>
                           <input
                             type="text"
@@ -179,7 +174,7 @@ const Login = () => {
                           for="exampleFormControlInput1"
                           className="form-label"
                         >
-                          <strong>Full Name :</strong>
+                          Full Name
                         </label>
                         <input
                           type="text"
@@ -198,7 +193,7 @@ const Login = () => {
                           for="exampleFormControlInput1"
                           className="form-label"
                         >
-                          <strong>Email :</strong>
+                          Email
                         </label>
                         <input
                           type="email"
@@ -221,7 +216,7 @@ const Login = () => {
                           for="exampleFormControlInput1"
                           className="form-label"
                         >
-                          <strong>Password :</strong>
+                          Password
                         </label>
                         <input
                           type="text"
@@ -250,7 +245,7 @@ const Login = () => {
                           for="exampleFormControlInput1"
                           className="form-label"
                         >
-                          <strong>Confirm Password :</strong>
+                          Confirm Password
                         </label>
                         <input
                           type="text"
@@ -293,9 +288,6 @@ const Login = () => {
                   <div className="text-center ps-5 pe-5">
                     <h4 className="p-1 Sing" onClick={GoogleClick}>
                       Google Sing-up
-                    </h4>
-                    <h4 className="p-1 Sing" onClick={handelSingOut}>
-                      Google hendelSingOut
                     </h4>
                   </div>
                 </div>
